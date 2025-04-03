@@ -97,12 +97,19 @@ class Spacemouse(Thread):
 
 
 def test():
-    with Spacemouse(deadzone=0.3) as sm:
-        for i in range(2000):
-            # print(sm.get_motion_state())
-            print(sm.get_motion_state_transformed())
-            print(sm.is_button_pressed(0), sm.is_button_pressed(1))
-            time.sleep(1/100)
+    try:
+        # 使用 with 语句启动 Spacemouse
+        with Spacemouse(deadzone=0.3) as sm:
+            print("Spacemouse 已启动，按 Ctrl+C 停止程序...")
+            while True:
+                # 打印转换后的运动状态和按钮状态
+                print(sm.get_motion_state_transformed())
+                print(sm.is_button_pressed(0), sm.is_button_pressed(1))
+                time.sleep(1/100)  # 限制打印频率
+    except KeyboardInterrupt:
+        print("\n捕获到 Ctrl+C, 正在停止程序...")
+        # 退出 with 语句时会自动调用 sm.stop() 来关闭线程
+
 
 if __name__ == '__main__':
     test()
